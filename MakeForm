@@ -1,0 +1,140 @@
+import sys
+from java.awt import *
+from java.awt.event  import *
+from java.lang  import *
+from javax.swing  import *
+from pawt import GridBag
+from java import awt
+from java.awt.Component import *
+
+from javax.swing import JFrame, JDesktopPane, JInternalFrame, JMenuBar, JMenu, JMenuItem, JScrollPane
+
+class FormFiltering(JFrame):
+
+    def __init__(self):
+        """
+        The JFrame.
+        """
+        JFrame.__init__(self,
+                                    'FILTERING ',
+                                    size=(500, 700),
+                                    defaultCloseOperation=JFrame.EXIT_ON_CLOSE)
+   
+        self.internalFrameCounter = 0
+        self.createDesktop()
+        self.createMenus()
+        
+
+    def createDesktop(self):
+        self.desktop = JDesktopPane()
+
+        self.contentPane.add(JScrollPane(self.desktop)) # This is the same as self.getContentPane().add(...)
+
+    def createMenus(self):
+
+        menu = JMenu('New')
+        menu.add(JMenuItem('Create new Filtering', actionPerformed=self.createInternalFrame))
+
+        menubar = JMenuBar()
+        menubar.add(menu)
+
+        self.setJMenuBar(menubar)
+    
+    def findButton(self, event):
+         if(self.bag.text == ''):
+           self.bag = JTextField('Type something here !') 
+
+    def createInternalFrame(self, event):
+        """
+        event has to be supplied whenever there is an event generated, from a menu being clicked
+        """
+        self.internalFrameCounter += 1
+
+        iframeName = 'Filtering %s' % self.internalFrameCounter
+        iframe     = JInternalFrame(iframeName, 1, 1, 1, 1, size=(500, 700), visible=1)
+        
+        pnl = JPanel()
+        
+        bag = GridBag(pnl, fill='BOTH', weightx=1.0)
+        #--------------------------------------------
+            # Весь текст патента    
+        title = awt.Label('Text patent', awt.Label.LEFT)
+        bag.addRow(title)
+        
+        call = awt.TextField('aldehyde (AND) (water (OR) alcoholic)', 50)                   
+        #bag.addRow(call, anchor="CENTER",  fill="HORIZONTAL", gridwidth=1)
+        bag.addRow(call,  fill="HORIZONTAL")
+         
+         #-----------------------------
+                # Название
+        title2 = awt.Label('Name', awt.Label.LEFT)
+        bag.addRow(title2)
+                #
+        name = awt.TextField(50)        
+        bag.addRow(name, anchor='CENTER', fill="HORIZONTAL")
+        
+        #-------------------------------
+                # Реферат
+        title3 = awt.Label('Abstract', awt.Label.LEFT)
+        bag.addRow(title3)
+                #
+        abstract = awt.TextField(50)
+        bag.addRow(abstract)
+      
+        #--------------------------------
+                #Описание
+        title4 = awt.Label('Description', awt.Label.LEFT)
+        bag.addRow(title4)
+                #
+        description = awt.TextField(50)
+        bag.addRow(description)
+        
+        #--------------------------------
+                # Формула
+        title5 = awt.Label('Formula', awt.Label.LEFT)
+        bag.addRow(title5)
+                #
+        formula = awt.TextField(50)
+        bag.addRow(formula)
+       
+        #---------------------------------
+                # Нормер патента
+        title6 = awt.Label('Patent', awt.Label.LEFT)
+        bag.addRow(title6)
+                #
+        patent = awt.TextField(50)   
+       
+        #---------------------------------        
+                # Дата публикации
+        title7 = awt.Label('Date Publication', awt.Label.LEFT)
+        bag.addRow(title7)
+                # Name 7
+        datePublication = awt.TextField('> 2008', 50)
+        bag.addRow(datePublication)
+        
+        #---------------------------------
+                # Класс
+        title8 = awt.Label('Category', awt.Label.LEFT)
+        bag.addRow(title8)
+                # 
+        category = awt.TextField('c',50)
+        bag.addRow(category)
+        
+        #---------------------------------
+                # Искать
+        button = JButton('Find')        
+        #bag.addRow(button, actionPerformed=findButton)
+        bag.addRow(button)
+            
+     
+        iframe.add(pnl)    
+        self.desktop.add(iframe)                
+        
+        iframe.setSelected(1)
+        iframe.moveToFront()
+
+
+if __name__ == '__main__':
+    form = FormFiltering()
+    form.setLocation(30, 30)
+    form.show()
